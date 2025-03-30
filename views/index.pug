@@ -1,0 +1,16 @@
+html
+  head
+    title Phil's List
+    link(rel='stylesheet', href='/static/normalize.css')
+    link(rel='stylesheet', href='/static/index.css')
+  body
+    h1
+        a(href='https://philslist.co.uk') Phil's List
+    h2 Food and Drink
+    ul
+      each val in foodData
+        li
+            a(href=val.website) #{val.name}
+            span , #{val.location}
+    iframe(src='https://www.google.com/maps/d/embed?mid=1ihh5Agq1Nfn6o-hsq7TMhC6wQGgXC8k&ehbc=2E312F', width='640', height='480')
+    p contact@philslist.co.uk
