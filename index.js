@@ -20,13 +20,13 @@ app.get('/update', (req, res) => {
 
     if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
 
-        const newdata = [];
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
             await doc.loadInfo(); // loads document properties and worksheets
             const sheet = doc.sheetsByIndex[1];
             const rows = await sheet.getRows();
+            const newdata = [];
 
             rows.forEach(row => {
                 let name = row.get('name');
@@ -54,18 +54,17 @@ app.get('/update', (req, res) => {
                 }
             });
 
+            console.log(newdata);
+
+            fs.writeFile('test.json', newdata, err => {
+                if (err) {
+                    console.error(err);
+                } else {
+                    // file written successfully
+                    console.log('venue.json updated successfully');
+                }
+            });
         })();
-
-        console.log(newdata);
-
-        fs.writeFile('test.json', newdata, err => {
-            if (err) {
-                console.error(err);
-            } else {
-                // file written successfully
-                console.log('venue.json updated successfully');
-            }
-        });
     }
 
     res.send('ok')
