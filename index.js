@@ -18,7 +18,9 @@ app.get('/', (req, res) => {
 
 app.get('/update', (req, res) => {
 
-    console.log('key', req.query);
+    console.log('query', req.query);
+
+    console.log('key', req.query.key);
 
     if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
 
