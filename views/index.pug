@@ -12,5 +12,12 @@ html
         li
             a(href=val.website) #{val.name}
             span , #{val.location}
+    h2 Entertainment
+    ul
+      each val in entertainment
+        li
+            a(href=val.website) #{val.name}
+            span , #{val.location}
+
     iframe(src='https://www.google.com/maps/d/embed?mid=1ihh5Agq1Nfn6o-hsq7TMhC6wQGgXC8k&ehbc=2E312F', height='1080')
     p contact@philslist.co.uk

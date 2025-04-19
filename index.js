@@ -3,7 +3,6 @@ const express = require('express');
 const fs = require('fs');
 require('dotenv').config();
 
-const venueData = require('./venue.json');
 const app = express()
 const port = 3000
 
@@ -12,16 +11,17 @@ app.set('view engine', 'pug')
 app.use('/static', express.static(__dirname + '/static'))
 
 app.get('/', (req, res) => {
-
+    
     fs.readFile('./venue.json', 'utf8', (err, data) => {
         if (err) {
             return res.status(500).json({ error: 'Failed to read file' });
         }
         try {
-            console.log(data);
             const jsonData = JSON.parse(data);
-            console.log(jsonData);
-            res.render('index', { foodData: jsonData.filter(item => item.category === 'food') });
+            res.render('index', { 
+                food: jsonData.filter(item => item.category === 'food'), 
+                entertainment: jsonData.filter(item => item.category === 'entertainment') 
+            });
         } catch (parseErr) {
             res.status(500).json({ error: 'Invalid JSON format' });
         }
@@ -64,8 +64,6 @@ app.get('/update', (req, res) => {
                     });
                 }
             });
-
-            // console.log(newdata);
 
             fs.writeFile('./venue.json', JSON.stringify(newdata), err => {
                 if (err) {
