@@ -13,9 +13,17 @@ app.use('/static', express.static(__dirname + '/static'))
 
 app.get('/', (req, res) => {
 
-    const data = fs.readFileSync('./venue.json');
-
-    res.render('index', { foodData: data.filter(item => item.category === 'food') });
+    fs.readFile('./venue.json', 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to read file' });
+        }
+        try {
+            const jsonData = JSON.parse(data);
+            res.render('index', { foodData: data.filter(item => item.category === 'food') });
+        } catch (parseErr) {
+            res.status(500).json({ error: 'Invalid JSON format' });
+        }
+    });
 })
 
 app.get('/update', (req, res) => {
@@ -44,7 +52,7 @@ app.get('/update', (req, res) => {
                     && postcode
                     && website) {
 
-                        newdata.push({
+                    newdata.push({
                         name: name,
                         category: category,
                         location: location,
@@ -71,5 +79,5 @@ app.get('/update', (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log(`philslist listening on port ${port}`)
+    console.log(`philslist listening on port ${port}`)
 })
