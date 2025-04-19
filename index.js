@@ -20,6 +20,16 @@ app.get('/update', (req, res) => {
 
     if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
 
+        console.log('test');
+
+        fs.writeFile('test.json', { test: 'test' }, err => {
+            if (err) {
+                console.error(err);
+            } else {
+                // file written successfully
+                console.log('venue.json updated successfully');
+            }
+        });
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
