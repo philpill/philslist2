@@ -1,7 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet')
 const express = require('express');
 const fs = require('fs');
-console.log(require('dotenv').config());
+require('dotenv').config();
 
 const venueData = require('./venue.json');
 const app = express()
@@ -13,7 +13,9 @@ app.use('/static', express.static(__dirname + '/static'))
 
 app.get('/', (req, res) => {
 
-    res.render('index', { foodData: venueData.filter(item => item.category === 'food') });
+    const data = readFileSync('./venue.json');
+
+    res.render('index', { foodData: data.filter(item => item.category === 'food') });
 })
 
 app.get('/update', (req, res) => {
@@ -55,11 +57,10 @@ app.get('/update', (req, res) => {
 
             // console.log(newdata);
 
-            fs.writeFile('venue.json', JSON.stringify(newdata), err => {
+            fs.writeFile('./venue.json', JSON.stringify(newdata), err => {
                 if (err) {
                     console.error(err);
                 } else {
-                    // file written successfully
                     console.log('venue.json updated successfully');
                 }
             });
