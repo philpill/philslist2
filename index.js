@@ -61,8 +61,9 @@ app.get('/update', (req, res) => {
                   console.error(err);
                 } else {
                   // file written successfully
+                  console.log('venue.json updated successfully');
                 }
-              });
+            });
 
         })();
     }
