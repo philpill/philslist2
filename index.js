@@ -3,7 +3,7 @@ const express = require('express');
 const fs = require('node:fs');
 // console.log(require('dotenv').config());
 
-const venueData = require('./venue.json');
+const venueData = []; // = require('./venue.json');
 const app = express()
 const port = 3000
 
