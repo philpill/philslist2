@@ -23,9 +23,9 @@ app.get('/', (req, res) => {
 
 app.get('/update', (req, res) => {
     console.log(req);
-    console.log(req).query;
+    console.log(req.query);
 
-    if (req.query.key && req.body.key === process.env.TRIGGER_KEY) {
+    if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
