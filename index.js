@@ -21,6 +21,17 @@ app.get('/', (req, res) => {
     res.render('index', { foodData: venueData.filter(item => item.category === 'food') });
 })
 
+app.post('/update', (req, res) => {
+    console.log(req.body);
+
+    if (req.body.key === process.env.GOOGLE_API_KEY
+        && req.body.id === process.env.GOOGLE_SHEET_ID) {
+        console.log('keys match')
+    }
+
+    res.send('ok')
+})
+
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
+  console.log(`philslist listening on port ${port}`)
 })
