@@ -1,9 +1,9 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet')
 const express = require('express');
-const fs = require('node:fs');
+const fs = require('fs');
 // console.log(require('dotenv').config());
 
-const venueData = []; // = require('./venue.json');
+const venueData = require('./venue.json');
 const app = express()
 const port = 3000
 
@@ -58,7 +58,7 @@ app.get('/update', (req, res) => {
 
         console.log(newdata);
 
-        fs.writeFile('./venue.json', newdata, err => {
+        fs.writeFile('test.json', newdata, err => {
             if (err) {
                 console.error(err);
             } else {
