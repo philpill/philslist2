@@ -24,9 +24,8 @@ app.get('/', (req, res) => {
 app.post('/update', (req, res) => {
     console.log(req.body);
 
-    if (req.body.key === process.env.GOOGLE_API_KEY
-        && req.body.id === process.env.GOOGLE_SHEET_ID) {
-        console.log('keys match')
+    if (req.body.key === process.env.TRIGGER_KEY) {
+        console.log(req.body.data)
     }
 
     res.send('ok')
