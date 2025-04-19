@@ -21,18 +21,38 @@ app.get('/update', (req, res) => {
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
-            await doc.loadInfo();
-            console.log(doc);
-    
             const sheet = doc.sheetsByIndex[1];
-            console.log(sheet.title);
-
             const rows = await sheet.getRows();
+
+            const newdata = [];
 
             rows.forEach(row => {
                 let name = row.get('name');
-                console.log(name);
+                let category = row.get('category');
+                let location = row.get('location');
+                let address = row.get('address');
+                let postcode = row.get('postcode');
+                let website = row.get('website');
+
+                if (name
+                    && category
+                    && location
+                    && address
+                    && postcode
+                    && website) {
+
+                        newdata.push({
+                        name: name,
+                        category: category,
+                        location: location,
+                        address: address,
+                        postcode: postcode,
+                        website: website
+                    });
+                }
             });
+
+            console.log(newdata);
 
         })();
     }
