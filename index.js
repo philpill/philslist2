@@ -21,11 +21,11 @@ app.get('/', (req, res) => {
     res.render('index', { foodData: venueData.filter(item => item.category === 'food') });
 })
 
-app.post('/update', (req, res) => {
+app.get('/update', (req, res) => {
     console.log(req);
-    console.log(req.body);
+    console.log(req).query;
 
-    if (req.body.key && req.body.key === process.env.TRIGGER_KEY) {
+    if (req.query.key && req.body.key === process.env.TRIGGER_KEY) {
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
