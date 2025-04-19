@@ -13,7 +13,7 @@ app.use('/static', express.static(__dirname + '/static'))
 
 app.get('/', (req, res) => {
 
-    const data = readFileSync('./venue.json');
+    const data = fs.readFileSync('./venue.json');
 
     res.render('index', { foodData: data.filter(item => item.category === 'food') });
 })
