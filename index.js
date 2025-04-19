@@ -1,7 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet')
 const express = require('express');
 const fs = require('fs');
-// console.log(require('dotenv').config());
+console.log(require('dotenv').config());
 
 const venueData = require('./venue.json');
 const app = express()
