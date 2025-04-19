@@ -55,7 +55,7 @@ app.get('/update', (req, res) => {
 
             // console.log(newdata);
 
-            fs.writeFile('test.json', JSON.stringify(newdata), err => {
+            fs.writeFile('venue.json', JSON.stringify(newdata), err => {
                 if (err) {
                     console.error(err);
                 } else {
