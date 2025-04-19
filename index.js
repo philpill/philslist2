@@ -26,7 +26,16 @@ app.post('/update', (req, res) => {
     console.log(req.body);
 
     if (req.body.key && req.body.key === process.env.TRIGGER_KEY) {
-        console.log(req.body.data)
+
+        (async function () {
+            const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
+            await doc.loadInfo();
+            console.log(doc);
+    
+            const sheet = doc.sheetsByIndex[1];
+            console.log(sheet.title);
+        })();
+
     }
 
     res.send('ok')
