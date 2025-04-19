@@ -21,6 +21,7 @@ app.get('/update', (req, res) => {
     console.log('query', req.query);
 
     console.log('key', req.query.key);
+    console.log('env', process.env.TRIGGER_KEY);
 
     if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
 
