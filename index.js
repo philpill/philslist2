@@ -21,7 +21,7 @@ app.get('/update', (req, res) => {
 
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
-            doc.loadInfo(); // loads document properties and worksheets
+            await doc.loadInfo(); // loads document properties and worksheets
             const sheet = doc.sheetsByIndex[1];
             const rows = await sheet.getRows();
 
