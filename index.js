@@ -1,6 +1,7 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet')
 const express = require('express');
-console.log(require('dotenv').config());
+const fs = require('node:fs');
+// console.log(require('dotenv').config());
 
 const venueData = require('./venue.json');
 const app = express()
@@ -53,7 +54,15 @@ app.get('/update', (req, res) => {
                 }
             });
 
-            console.log(newdata);
+            // console.log(newdata);
+
+            fs.writeFile('./venue.json', newdata, err => {
+                if (err) {
+                  console.error(err);
+                } else {
+                  // file written successfully
+                }
+              });
 
         })();
     }
