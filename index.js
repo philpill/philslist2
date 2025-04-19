@@ -22,9 +22,10 @@ app.get('/', (req, res) => {
 })
 
 app.post('/update', (req, res) => {
+    console.log(req);
     console.log(req.body);
 
-    if (req.body.key === process.env.TRIGGER_KEY) {
+    if (req.body.key && req.body.key === process.env.TRIGGER_KEY) {
         console.log(req.body.data)
     }
 
