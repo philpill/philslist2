@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
             console.log(data);
             const jsonData = JSON.parse(data);
             console.log(jsonData);
-            res.render('index', { foodData: data.filter(item => item.category === 'food') });
+            res.render('index', { foodData: jsonData.filter(item => item.category === 'food') });
         } catch (parseErr) {
             res.status(500).json({ error: 'Invalid JSON format' });
         }
