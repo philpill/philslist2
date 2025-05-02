@@ -38,31 +38,7 @@ app.get('/update', (req, res) => {
             const rows = await sheet.getRows();
             const newdata = [];
 
-            rows.forEach(row => {
-                let name = row.get('name');
-                let category = row.get('category');
-                let location = row.get('location');
-                let address = row.get('address');
-                let postcode = row.get('postcode');
-                let website = row.get('website');
-
-                if (name
-                    && category
-                    && location
-                    && address
-                    && postcode
-                    && website) {
-
-                    newdata.push({
-                        name: name,
-                        category: category,
-                        location: location,
-                        address: address,
-                        postcode: postcode,
-                        website: website
-                    });
-                }
-            });
+            newdata = getDataFromRows(rows);
 
             deleteDb(db);
             createDb(db);
@@ -71,7 +47,40 @@ app.get('/update', (req, res) => {
     }
 
     res.send('ok')
-})
+});
+
+function getDataFromRows(rows) {
+
+    let data = [];
+
+    rows.forEach(row => {
+        let name = row.get('name');
+        let category = row.get('category');
+        let location = row.get('location');
+        let address = row.get('address');
+        let postcode = row.get('postcode');
+        let website = row.get('website');
+
+        if (name
+            && category
+            && location
+            && address
+            && postcode
+            && website) {
+
+            data.push({
+                name: name,
+                category: category,
+                location: location,
+                address: address,
+                postcode: postcode,
+                website: website
+            });
+        }
+    });
+
+    return data;
+}
 
 function getData(db) {
     return new Promise((resolve, reject) => {
