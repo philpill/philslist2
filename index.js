@@ -12,6 +12,10 @@ app.set('view engine', 'pug')
 
 app.use('/static', express.static(__dirname + '/static'))
 
+app.use('/holiday', (req, res) => {
+    res.render('holiday')
+})
+
 app.get('/', (req, res) => {
 
     createDb(db);
