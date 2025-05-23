@@ -40,9 +40,7 @@ app.get('/update', (req, res) => {
             await doc.loadInfo(); // loads document properties and worksheets
             const sheet = doc.sheetsByIndex[1];
             const rows = await sheet.getRows();
-            const newdata = [];
-
-            newdata = getDataFromRows(rows);
+            const newdata = getDataFromRows(rows);
 
             deleteDb(db);
             createDb(db);
