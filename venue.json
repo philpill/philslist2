@@ -1,11 +1,19 @@
 [
   {
+    "name": "Barra Farmshop and Kitchen",
+    "category": "food",
+    "location": "Oldmeldrum",
+    "address": "Barra Castle",
+    "postcode": "AB51 0BB",
+    "website": "https://barracastle.co.uk/eat-at-barra-castle/"
+  },
+  {
     "name": "JG Ross Inverurie",
     "category": "food",
     "location": "Inverurie",
     "address": "Highclere Business Park, Highclere Way, Inverurie",
     "postcode": "AB51 5QW",
-    "website": "https://www.jg-ross.co.uk/coffee-shops"
+    "website": "https://www.jg-ross.co.uk/coffee-shop"
   },
   {
     "name": "Mains of Drum",
