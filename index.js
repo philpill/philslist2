@@ -1,9 +1,12 @@
-const { GoogleSpreadsheet } = require('google-spreadsheet');
+import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { DatabaseSync } from 'node:sqlite';
+import express from 'express';
+import 'dotenv/config'; // This replaces require('dotenv').config()
+
 const db = new DatabaseSync('./philslist.db');
-const express = require('express');
-const { get } = require('http');
-require('dotenv').config();
+const app = express(); // Assuming you're starting express here
+
+import { get } from 'node:http';
 
 const app = express()
 const port = 3000
