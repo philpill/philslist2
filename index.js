@@ -2,7 +2,11 @@ import { GoogleSpreadsheet } from 'google-spreadsheet';
 import { DatabaseSync } from 'node:sqlite';
 import express from 'express';
 import 'dotenv/config';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 const db = new DatabaseSync('./philslist.db');
 const app = express();
 const port = 3000
