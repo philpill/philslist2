@@ -23,15 +23,16 @@ app.get('/', (req, res) => {
 
     createDb(db);
 
-    getData(db).then(data => {
+    try {
+        const data = getData(db);
         res.render('index', {
             food: data.filter(item => item.category === 'food'),
             entertainment: data.filter(item => item.category === 'entertainment')
         });
-    }).catch(err => {
+    } catch (err) {
         console.error(err);
         res.status(500).json({ error: 'Failed to fetch data from database' });
-    });
+    }
 })
 
 app.get('/update', (req, res) => {
@@ -90,7 +91,7 @@ function getDataFromRows(rows) {
 function getData(db) {
 
     const query = db.prepare('SELECT * FROM venue');
-    const rows = query.all(1); // Executes immediately
+    const rows = query.all(); // Executes immediately
     return rows;
 }
 
