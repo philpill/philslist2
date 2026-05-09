@@ -1,6 +1,6 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
-const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./philslist.db');
+import { DatabaseSync } from 'node:sqlite';
+const db = new DatabaseSync('./philslist.db');
 const express = require('express');
 const { get } = require('http');
 require('dotenv').config();
@@ -85,49 +85,36 @@ function getDataFromRows(rows) {
 }
 
 function getData(db) {
-    return new Promise((resolve, reject) => {
-        db.serialize(() => {
-            db.all(`SELECT * FROM venue`, (err, rows) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(rows);
-                }
-            });
-        });
-    });
+
+    const query = db.prepare('SELECT * FROM venue');
+    const rows = query.all(1); // Executes immediately
+    return rows;
 }
 
 function insertData(db, data) {
-    db.serialize(() => {
-        const stmt = db.prepare('INSERT INTO venue VALUES (?, ?, ?, ?, ?, ?, ?)');
-        for (let i = 0; i < data.length; i++) {
-            stmt.run(i, data[i].name, data[i].category, data[i].location, data[i].address, data[i].postcode, data[i].website);
-        }
-        stmt.finalize();
-    });
+
+    const insert = db.prepare('INSERT INTO venue VALUES (?, ?, ?, ?, ?, ?, ?)');
+    for (let i = 0; i < data.length; i++) {
+        insert.run(i, data[i].name, data[i].category, data[i].location, data[i].address, data[i].postcode, data[i].website);
+    }
 }
 
 function deleteDb(db) {
-    db.serialize(() => {
-        db.run(`DROP TABLE IF EXISTS venue`);
-    });
+    db.exec(`DROP TABLE IF EXISTS venue`);
 }
 
 function createDb(db) {
-    db.serialize(() => {
-        db.run(`
-            CREATE TABLE IF NOT EXISTS venue (
-                venue_id INTEGER PRIMARY KEY,
-                name TEXT NOT NULL,
-                category TEXT,
-                location TEXT,
-                address TEXT,
-                postcode TEXT,
-                website TEXT
-            )
-        `);
-    });
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS venue (
+            venue_id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            category TEXT,
+            location TEXT,
+            address TEXT,
+            postcode TEXT,
+            website TEXT
+        )
+    `);
 }
 
 app.listen(port, () => {
