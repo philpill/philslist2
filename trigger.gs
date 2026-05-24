@@ -1,37 +1,44 @@
-// triger code used in apps script
-
 function onEditTrigger(e) {
 
   const triggerKey = '[key]';
 
-  const range = e.range;
-  const sheet = range.getSheet();
-  const data = sheet.getDataRange().getValues();
-  const formattedData = [];
-
-  for (let row in data) {
-    
-    let value = data[row];
-    
-    //Logger.log("value = %s", value);
-
-    // [JG Ross Inverurie, food, Inverurie, Highclere Business Park, Highclere Way, Inverurie, AB51 5QW, https://www.jg-ross.co.uk/coffee-shops]
-
-    let formattedRow = {
-      name: value[0],
-      category: value[1],
-      location: value[2],
-      address: value[3],
-      postcode: value[4],
-      website: value[5]
-    };
-
-    formattedData.push(formattedRow);
+  if (!e || !e.range) {
+    return;
   }
 
-  // Logger.log(formattedData);
-  
-  const response = UrlFetchApp.fetch('https://philslist.co.uk/update?key=' + triggerKey);
-  
-  Logger.log(response.getContentText());
+  const range = e.range;
+  const sheet = range.getSheet();
+  const sheetName = sheet.getName();
+
+  if (sheetName === 'Venues') {
+
+    const editedRowNumber = range.getRow();
+
+    if (editedRowNumber === 1) return;
+
+    const rowData = sheet.getRange(editedRowNumber, 1, 1, 6).getValues()[0];
+
+    const formattedRow = {
+      name: rowData[0],
+      category: rowData[1],
+      location: rowData[2],
+      address: rowData[3],
+      postcode: rowData[4],
+      website: rowData[5]
+    };
+
+    Logger.log(formattedRow);
+
+    const url = 'https://philslist.co.uk/update?key=' + triggerKey;
+
+    try {
+        const response = UrlFetchApp.fetch(url);
+        Logger.log(response.getContentText());
+    } catch (error) {
+        Logger.log("Error sending data: " + error.toString());
+    }
+  }
+}
+
+
 }

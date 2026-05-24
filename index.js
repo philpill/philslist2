@@ -42,7 +42,13 @@ app.get('/update', (req, res) => {
         (async function () {
             const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
             await doc.loadInfo(); // loads document properties and worksheets
-            const sheet = doc.sheetsByIndex[1];
+
+            const sheet = doc.sheetsByName['Venues']; 
+
+            if (!sheet) {
+                throw new Error("Sheet named 'Venues' could not be found.");
+            }
+
             const rows = await sheet.getRows();
             const newdata = getDataFromRows(rows);
 
