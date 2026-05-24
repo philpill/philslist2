@@ -35,41 +35,25 @@ app.get('/', (req, res) => {
     }
 })
 
-// 1. Notice the 'async' keyword right here before (req, res)
-app.get('/update', async (req, res) => {
-    
-    // Check key authorization
-    if (!req.query || !req.query.key || req.query.key !== process.env.TRIGGER_KEY) {
-        return res.status(401).send('Unauthorized: Invalid or missing key');
+app.get('/update', (req, res) => {
+
+    if (req.query && req.query.key && req.query.key === process.env.TRIGGER_KEY) {
+
+        (async function () {
+            const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
+            await doc.loadInfo(); // loads document properties and worksheets
+            // use index because sheet is not public
+            const sheet = doc.sheetsByIndex[1];
+            const rows = await sheet.getRows();
+            const newdata = getDataFromRows(rows);
+
+            deleteDb(db);
+            createDb(db);
+            insertData(db, newdata);
+        })();
     }
 
-    try {
-        const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
-        await doc.loadInfo(); 
-
-        const sheet = doc.sheetsByName['Venues']; 
-        if (!sheet) {
-            // This error will now be caught safely by the catch block below
-            throw new Error("Sheet named 'Venues' could not be found.");
-        }
-
-        const rows = await sheet.getRows();
-        const newdata = getDataFromRows(rows);
-
-        // If these database operations are asynchronous (e.g., return promises), 
-        // you should look into adding 'await' before them too:
-        await deleteDb(db);
-        await createDb(db);
-        await insertData(db, newdata);
-
-        // Only send 'ok' once everything has successfully finished
-        res.send('ok');
-
-    } catch (error) {
-        console.error("Update failed:", error);
-        // Safely respond to the client with an error code instead of crashing the server
-        res.status(500).send('Internal Server Error: ' + error.message);
-    }
+    res.send('ok')
 });
 
 function getDataFromRows(rows) {
