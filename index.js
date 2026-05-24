@@ -47,11 +47,12 @@ app.get('/update', async (req, res) => {
         const doc = new GoogleSpreadsheet(process.env.GOOGLE_SHEET_ID, { apiKey: process.env.GOOGLE_API_KEY });
         await doc.loadInfo(); 
 
-        const sheet = doc.sheetsByName['Venues']; 
+        const sheet = doc.sheetsByIndex[1]; 
         if (!sheet) {
             // This error will now be caught safely by the catch block below
-            throw new Error("Sheet named 'Venues' could not be found.");
+            throw new Error("Sheet could not be found.");
         }
+
 
         const rows = await sheet.getRows();
         const newdata = getDataFromRows(rows);

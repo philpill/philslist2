@@ -3,6 +3,7 @@ philslist2
 pm2
  - restart all
  - logs
+ - pm2 start index.js
 
 google sheets
  - https://console.cloud.google.com
