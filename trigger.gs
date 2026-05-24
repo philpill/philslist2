@@ -10,6 +10,8 @@ function onEditTrigger(e) {
   const sheet = range.getSheet();
   const sheetName = sheet.getName();
 
+  Logger.log('sheetName: ' + sheetName);
+
   if (sheetName === 'Venues') {
 
     const editedRowNumber = range.getRow();
